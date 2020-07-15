@@ -17,10 +17,15 @@ public class RedisController {
 
     @GetMapping("/shop")
     public String shopPhone() {
+        //加锁，确保当前只有一个用户能够进来消费
         synchronized (this) {
-            int number = Integer.parseInt(String.valueOf(redisTemplate.opsForValue().get("shop")));
+            //取出phone的剩余数量
+            int number = Integer.parseInt(String.valueOf(redisTemplate.opsForValue().get("phone")));
+            //还有剩余
             if (number > 0) {
+                //消费一个
                 number--;
+                //将消费完的phone的数量，重新放到redis中
                 redisTemplate.opsForValue().set("shop", String.valueOf(number));
                 System.out.println("恭喜抢到啦！"+number);
                 return "恭喜抢到啦！";
