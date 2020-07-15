@@ -1,0 +1,16 @@
+server:
+  port: 8008
+
+eureka:
+  server:
+    enable-self-preservation: false
+  instance:
+    hostname: 192.168.0.24
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+spring:
+  application:
+    name: eureka-server

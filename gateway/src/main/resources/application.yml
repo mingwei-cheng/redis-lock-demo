@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    eureka-server-port: 8008
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.client.eureka-server-port}/eureka/
+
+
+zuul:
+  routes:
+    shop-api:
+      path: /shop-api/**
+      serviceId: shop
