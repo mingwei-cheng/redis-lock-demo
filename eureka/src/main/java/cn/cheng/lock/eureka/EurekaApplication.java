@@ -1,4 +1,4 @@
-package cn.cheng.lock.server;
+package cn.cheng.lock.eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
