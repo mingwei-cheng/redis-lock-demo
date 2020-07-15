@@ -1,4 +1,4 @@
-package cn.cheng.lock.eureka;
+package cn.cheng.lock.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

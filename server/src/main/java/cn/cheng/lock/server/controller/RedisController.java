@@ -1,4 +1,4 @@
-package cn.cheng.lock.eureka.controller;
+package cn.cheng.lock.server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
