@@ -26,7 +26,7 @@ public class RedisController {
                 //消费一个
                 number--;
                 //将消费完的phone的数量，重新放到redis中
-                redisTemplate.opsForValue().set("shop", String.valueOf(number));
+                redisTemplate.opsForValue().set("phone", String.valueOf(number));
                 System.out.println("恭喜抢到啦！"+number);
                 return "恭喜抢到啦！";
             } else {
