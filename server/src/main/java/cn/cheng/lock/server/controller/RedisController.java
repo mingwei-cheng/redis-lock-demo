@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
  * @author Cheng Mingwei
  * @create 2020-07-15 19:58
  **/
@@ -28,6 +27,10 @@ public class RedisController {
         String lock = "phoneLock";
         //获取锁
         RLock rLock = redissonClient.getLock(lock);
+        if (rLock.isLocked()) {
+            System.out.println("活动太火爆了，请稍后再试！");
+            return "活动太火爆了，请稍后再试！";
+        }
         //获取到了，才需要finally去释放锁
         try {
             //加锁
