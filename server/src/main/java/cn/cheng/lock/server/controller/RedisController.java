@@ -1,9 +1,14 @@
 package cn.cheng.lock.server.controller;
 
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * demo2 : 演示了redis在分布式的高并发场景下，使用简单的手动锁可能会出现的问题。
@@ -16,23 +21,19 @@ public class RedisController {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private RedissonClient redissonClient;
 
     @GetMapping("/shop")
     public String shopPhone() {
+        //标识锁用
         String lock = "phoneLock";
-        /*
-         * 尝试获取锁,Redis单线程，所以同时只会有一个线程获得锁
-         * 未设置超时时间，在服务不出问题的情况下（如服务挂了，网络断了等），可以实现分布式锁
-         */
-        Boolean result = redisTemplate.opsForValue().setIfAbsent(lock, "phone");
-        assert result != null;
-        //假如没获取到锁
-        if (!result) {
-            System.out.println("活动太火爆了，请稍后再试!");
-            return "活动太火爆了，请稍后再试!";
-        }
+        //获取锁
+        RLock rLock = redissonClient.getLock(lock);
         //获取到了，才需要finally去释放锁
         try {
+            //加锁
+            rLock.lock(5, TimeUnit.SECONDS);
             //取出phone的剩余数量
             String phone = redisTemplate.opsForValue().get("phone");
             if (phone == null) {
@@ -53,8 +54,10 @@ public class RedisController {
                 return "没抢到...";
             }
         } finally {
-            //释放锁
-            redisTemplate.delete(lock);
+            if (rLock.isLocked()) {
+                //释放锁
+                rLock.unlock();
+            }
         }
     }
 }
