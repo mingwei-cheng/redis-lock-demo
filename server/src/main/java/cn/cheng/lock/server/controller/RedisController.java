@@ -1,6 +1,5 @@
 package cn.cheng.lock.server.controller;
 
-import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.TimeUnit;
 
 /**
- * demo2 : 演示了redis在分布式的高并发场景下，使用简单的手动锁可能会出现的问题。
  *
  * @author Cheng Mingwei
  * @create 2020-07-15 19:58
