@@ -18,3 +18,5 @@ zuul:
     shop-api:
       path: /shop-api/**
       serviceId: shop
+  semaphore:
+    max-semaphores: 3000
